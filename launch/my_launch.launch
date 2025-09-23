@@ -1,0 +1,27 @@
+<launch>
+  <include file="$(find gazebo_ros)/launch/empty_world.launch">
+    <env name="GAZEBO_RESOURCE_PATH" value="$(find enph353_ros_lab)"/>
+    <env name="GAZEBO_MODEL_PATH"    value="$(find enph353_ros_lab)/models"/>
+    <arg name="world_name" value="$(find enph353_ros_lab)/worlds/353_ros_lab.world"/>
+    <arg name="gui" value="true"/>
+  </include>
+  <include file="$(find enph353_ros_lab)/launch/robot.launch">
+	<arg name="init_pose" value="-x 0.0 -y 0.0 -z 1.0 -R 0.0 -P 0.0 -Y 0.0" />
+  </include>
+  <!-- Line following node -->
+  <node pkg="enph353_ros_lab"
+        type="line_follower.py"
+        name="line_follower"
+        output="screen">
+    <param name="image_topic"     value="/robot/camera1/image_raw"/>
+    <param name="cmd_vel_topic"   value="/cmd_vel"/>        <!-- or /robot/cmd_vel -->
+    <param name="v_forward"       value="2"/>
+    <param name="kp"              value="0.03"/>
+    <param name="ki"              value="0.000"/>
+    <param name="kd"              value="0.002"/>
+    <param name="roi_height_frac" value="0.3"/>
+    <param name="binary_thresh"   value="110"/>
+    <param name="erode_iters"     value="1"/>
+    <param name="dilate_iters"    value="2"/>
+  </node>
+</launch>
