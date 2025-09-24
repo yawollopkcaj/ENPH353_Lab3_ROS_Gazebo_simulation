@@ -7,7 +7,13 @@ from sensor_msgs.msg import Image
 from geometry_msgs.msg import Twist
 
 class LineFollower:
+    """
+    @brief Line following robot controller using vision and PID control.
+    """
     def __init__(self):
+        """
+        @brief Initialize the LineFollower node, parameters, and ROS I/O.
+        """
         rospy.init_node('line_follower', anonymous=True)
 
         # Parameters
@@ -39,6 +45,10 @@ class LineFollower:
         rospy.spin()
 
     def image_cb(self, msg):
+        """
+        @brief Callback for processing incoming camera images.
+        @param msg The incoming image message.
+        """
         try:
             frame = self.bridge.imgmsg_to_cv2(msg, desired_encoding="bgr8")
         except CvBridgeError as e:
